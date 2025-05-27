@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Flashcard Creator}",
+            "name": "Debug FlashCard Creator",
+            "program": "${workspaceFolder:Flashcard Creator}/.build/debug/FlashCard Creator",
+            "preLaunchTask": "swift: Build Debug FlashCard Creator"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Flashcard Creator}",
+            "name": "Release FlashCard Creator",
+            "program": "${workspaceFolder:Flashcard Creator}/.build/release/FlashCard Creator",
+            "preLaunchTask": "swift: Build Release FlashCard Creator"
+        }
+    ]
+}
