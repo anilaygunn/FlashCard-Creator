@@ -801,6 +801,38 @@ class DatabaseManager: ObservableObject {
             }
         }
     }
+    
+    // MARK: - Deck Operations
+    func mergeDecks(_ deck1: Deck, _ deck2: Deck, newName: String) {
+        print("Merging decks: \(deck1.name) and \(deck2.name)")
+        
+        // Combine flashcards from both decks
+        var mergedFlashcards = deck1.flashcards
+        mergedFlashcards.append(contentsOf: deck2.flashcards)
+        
+        // Remove duplicates based on image name and answer
+        mergedFlashcards = Array(Set(mergedFlashcards))
+        
+        // Create a new unique folder path for the merged deck
+        let mergedFolderPath = FileManager.default.temporaryDirectory
+            .appendingPathComponent("merged_decks")
+            .appendingPathComponent(UUID().uuidString)
+            .path
+        
+        // Create new merged deck with unique path
+        let mergedDeck = Deck(
+            name: newName,
+            folderPath: mergedFolderPath,
+            flashcards: mergedFlashcards
+        )
+        
+        // Add merged deck to available decks
+        DispatchQueue.main.async {
+            self.availableDecks.append(mergedDeck)
+            self.saveDeck(mergedDeck)
+            print("Successfully merged decks into: \(newName)")
+        }
+    }
 }
 
 // MARK: - Errors

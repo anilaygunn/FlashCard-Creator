@@ -8,6 +8,9 @@ struct DeckListView: View {
     @State private var alertMessage = ""
     @State private var selectedFolderURL: URL?
     @State private var deckName = ""
+    @State private var showingMergeSheet = false
+    @State private var selectedDecks: Set<Deck> = []
+    @State private var mergedDeckName = ""
     
     var body: some View {
         NavigationStack {
@@ -33,12 +36,24 @@ struct DeckListView: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showingDocumentPicker = true
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.title2)
-                            .foregroundColor(.blue)
+                    HStack {
+                        if databaseManager.availableDecks.count >= 2 {
+                            Button {
+                                showingMergeSheet = true
+                            } label: {
+                                Image(systemName: "rectangle.stack.badge.plus")
+                                    .font(.title2)
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                        
+                        Button {
+                            showingDocumentPicker = true
+                        } label: {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.title2)
+                                .foregroundColor(.blue)
+                        }
                     }
                 }
             }
@@ -47,6 +62,77 @@ struct DeckListView: View {
                     selectedFolderURL = url
                     deckName = url.lastPathComponent // Default deck name
                     showingDeckNameInput = true
+                }
+            }
+            .sheet(isPresented: $showingMergeSheet) {
+                NavigationStack {
+                    VStack(spacing: 20) {
+                        Text("Select Decks to Merge")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        
+                        List(databaseManager.availableDecks, id: \.id) { deck in
+                            HStack {
+                                Text(deck.name)
+                                Spacer()
+                                if selectedDecks.contains(deck) {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .foregroundColor(.blue)
+                                }
+                            }
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                if selectedDecks.contains(deck) {
+                                    selectedDecks.remove(deck)
+                                } else if selectedDecks.count < 2 {
+                                    selectedDecks.insert(deck)
+                                }
+                            }
+                        }
+                        
+                        if selectedDecks.count == 2 {
+                            VStack(spacing: 12) {
+                                Text("New Deck Name")
+                                    .font(.headline)
+                                
+                                TextField("Enter name for merged deck", text: $mergedDeckName)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .padding(.horizontal)
+                            }
+                            
+                            Button {
+                                if !mergedDeckName.isEmpty {
+                                    let decks = Array(selectedDecks)
+                                    databaseManager.mergeDecks(decks[0], decks[1], newName: mergedDeckName)
+                                    showingMergeSheet = false
+                                    selectedDecks.removeAll()
+                                    mergedDeckName = ""
+                                }
+                            } label: {
+                                Text("Merge Decks")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.blue.gradient)
+                                    .cornerRadius(12)
+                            }
+                            .disabled(mergedDeckName.isEmpty)
+                            .padding(.horizontal)
+                        }
+                    }
+                    .padding()
+                    .navigationTitle("Merge Decks")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button("Cancel") {
+                                showingMergeSheet = false
+                                selectedDecks.removeAll()
+                                mergedDeckName = ""
+                            }
+                        }
+                    }
                 }
             }
             .sheet(isPresented: $showingDeckNameInput) {

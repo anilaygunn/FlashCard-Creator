@@ -326,11 +326,17 @@ struct GameCompleteView: View {
             // Trophy or celebration icon
             Image(systemName: sessionScore >= 0 ? "trophy.fill" : "hand.thumbsup.fill")
                 .font(.system(size: 80))
+                .foregroundStyle(.yellow)
             
             VStack(spacing: 16) {
-                Text("Game Complete!")
-                    .font(.title)
+                Text("YASSSSASIIINN IDILIMMM")
+                    .font(.largeTitle)
                     .fontWeight(.bold)
+                
+                Text("SUPERSIN SEVGILIIIMMMM <3!")
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.blue)
                 
                 Text("Session Score: \(sessionScore)")
                     .font(.title2)
