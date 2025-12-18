@@ -1,73 +1,66 @@
-# Xcode
-#
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+# --- macOS Sistem Dosyaları ---
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
 
-## User settings
-xcuserdata/
-.vscode/
-## Obj-C/Swift specific
-*.hmap
-
-## App packaging
-*.ipa
-*.dSYM.zip
-*.dSYM
-
-## Playgrounds
-timeline.xctimeline
-playground.xcworkspace
-
-# Xcode
+# --- Xcode / iOS ---
+# Derleme ve geçici dosyalar
+build/
 DerivedData/
-*.xcuserstate
-*.xcuserdata/
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+# Kullanıcıya özel ayarlar (Bunları repoya atma, senin pencerelerinin konumu vs.)
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcuserdatad/
+UserInterfaceState.xcuserstate
+
+# CocoaPods (Eğer kullanıyorsan)
+# Pods klasörünü atmak genellikle önerilmez, `pod install` ile herkes kendi kurar.
+Pods/
+Podfile.lock
 
 # Swift Package Manager
-#
-# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
- Packages/
- Package.pins
- Package.resolved
- *.xcodeproj
-
-.DS_Store
-# SwiftPM
-.build/
-Package.resolved
-# Xcode automatically generates this directory with a .xcworkspacedata file and xcuserdata
-# hence it is not needed unless you have added a package configuration file to your project
-.swiftpm
-
+.swiftpm/xcode/
 .build/
 
+# --- Güvenlik ve Sertifikalar (ÇOK ÖNEMLİ) ---
+# Özel anahtarlar ve sertifikalar asla gitmemeli
+*.p12
+*.cer
+*.pem
+*.key
+*.mobileprovision
+*.provisionprofile
+
+# Apple Music / APNs Anahtarları (Özellikle senin projen için)
+AuthKey_*.p8
+
+# --- Backend / Node.js ---
+# Bağımlılıklar (Bunlar çok yer kaplar, npm install ile kurulur)
+node_modules/
+jspm_packages/
+
+# Loglar
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs
+*.log
+
+# Çevresel Değişkenler (API Key'lerin burada durur, repoya gitmemeli)
 .env
-*.plist
-# CocoaPods
-#
-# We recommend against adding the Pods directory to your .gitignore. However
-# you should judge for yourself, the pros and cons are mentioned at:
-# https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
-#
-Pods/
-#
-# Add this line if you want to avoid checking in source code from the Xcode workspace
-*.xcworkspace
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Carthage
-#
-# Add this line if you want to avoid checking in source code from Carthage dependencies.
-# Carthage/Checkouts
+# Vercel
+.vercel
 
-Carthage/Build/
-
-# fastlane
-#
-# It is recommended to not store the screenshots in the git repo.
-# Instead, use fastlane to re-generate the screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://docs.fastlane.tools/best-practices/source-control/#source-control
-
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots/**/*.png
-fastlane/test_output
+# --- Editörler ---
+.vscode/
+.idea/
